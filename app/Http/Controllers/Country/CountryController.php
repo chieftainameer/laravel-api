@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Models\CountryModel;
-use PHPUnit\Framework\Constraint\Count;
+use Illuminate\Support\Facades\Validator;
 
 class CountryController extends Controller
 {
@@ -35,6 +35,15 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+        $rules = [
+            'name' => 'required|min:3',
+            'iso' => 'required|min:2',
+            'iso3' => 'required|min:2'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if ($validator->fails()){
+            return \response()->json(['message' => $validator->errors()]);
+        }
         $country = CountryModel::create($request->all());
         if ($country){
             return response()->json(['msg' => 'Country created successfully',$country],201);
