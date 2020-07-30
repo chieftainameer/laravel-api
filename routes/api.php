@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/countries','Country\CountryController@index')->name('countries');
+Route::get('/countries/{country}','Country\CountryController@indv_country')->name('individual-country');
+//Route::view('/create','create_country');
+Route::post('/country/create','Country\CountryController@store')->name('store-country');
+Route::put('/countries/{country}/update','Country\CountryController@update');
+Route::delete('countries/{country}/delete','Country\CountryController@destroy');
